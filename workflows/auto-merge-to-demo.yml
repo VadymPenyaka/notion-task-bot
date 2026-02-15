@@ -1,0 +1,28 @@
+name: Auto Merge to Demo
+
+on:
+  push:
+    branches-ignore:
+      - master
+      - demo
+
+jobs:
+  merge-to-demo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout demo branch
+        uses: actions/checkout@v3
+        with:
+          ref: demo
+          fetch-depth: 0
+      - name: Setup Git User
+        run: |
+          git config user.name "GitHub Action"
+          git config user.email "action@github.com"
+
+      - name: Merge the pushed branch into demo
+        run: |
+          # github.ref_name — це назва гілки, в яку ви зробили пуш
+          echo "Merging ${{ github.ref_name }} into demo..."
+          git merge origin/${{ github.ref_name }} --no-edit --allow-unrelated-histories
+          git push origin demo
