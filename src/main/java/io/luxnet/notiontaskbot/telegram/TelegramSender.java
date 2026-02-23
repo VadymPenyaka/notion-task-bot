@@ -23,4 +23,11 @@ public class TelegramSender {
             log.error("Failed to execute {}: {}", method.getClass().getSimpleName(), e.getMessage());
         }
     }
+
+    public <T extends Serializable> void sendSilently(BotApiMethod<T> method) {
+        try {
+            absSender.execute(method);
+        } catch (TelegramApiException ignored) {
+        }
+    }
 }

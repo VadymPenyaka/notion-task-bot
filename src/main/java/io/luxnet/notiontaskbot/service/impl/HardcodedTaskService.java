@@ -1,5 +1,7 @@
 package io.luxnet.notiontaskbot.service.impl;
 
+import io.luxnet.notiontaskbot.model.Priority;
+import io.luxnet.notiontaskbot.model.Task;
 import io.luxnet.notiontaskbot.service.TaskService;
 import org.springframework.stereotype.Service;
 
@@ -9,12 +11,12 @@ import java.util.List;
 public class HardcodedTaskService implements TaskService {
 
     @Override
-    public List<String> getTasks() {
+    public List<Task> getTasks() {
         return List.of(
-                "1. Записатись до стоматолога",
-                "2. Купити продукти",
-                "3. Зробити code review",
-                "4. Прочитати главу книги"
+                new Task("1", "Записатись до стоматолога", Priority.HIGH),
+                new Task("2", "Купити продукти", Priority.MEDIUM),
+                new Task("3", "Зробити code review", Priority.MEDIUM),
+                new Task("4", "Прочитати главу книги", Priority.MEDIUM)
         );
     }
 }
