@@ -1,11 +1,13 @@
 package io.luxnet.notiontaskbot.telegram.handler;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Slf4j
 @Component
+@Order(100)
 public class TextInputHandler implements UpdateHandler {
 
     @Override
