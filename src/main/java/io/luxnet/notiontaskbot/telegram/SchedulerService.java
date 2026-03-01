@@ -14,7 +14,7 @@ public class SchedulerService {
     private final BriefSender briefSender;
     private final TelegramProperties telegramProperties;
 
-    @Scheduled(cron = "0 0 8 * * *")
+    @Scheduled(cron = "0 0 10 * * *")
     public void morningBrief() {
         log.info("Sending morning brief");
         briefSender.send(telegramProperties.getChatId());

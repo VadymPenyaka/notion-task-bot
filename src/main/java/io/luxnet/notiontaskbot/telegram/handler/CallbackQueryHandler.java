@@ -81,6 +81,7 @@ public class CallbackQueryHandler implements UpdateHandler {
                 .replyMarkup(InlineKeyboardMarkup.builder().keyboard(sortedRows).build())
                 .build());
 
+        taskService.updateStatus(taskId, nextStatus);
         answerCallback(callbackQuery.getId());
     }
 
