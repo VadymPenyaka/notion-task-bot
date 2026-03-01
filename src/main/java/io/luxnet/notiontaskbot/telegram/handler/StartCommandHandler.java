@@ -32,7 +32,6 @@ public class StartCommandHandler implements UpdateHandler {
         long chatId = update.getMessage().getChatId();
         int currentMessageId = update.getMessage().getMessageId();
 
-        // clear all messages before stat message
         clearMessages(chatId, currentMessageId - 1);
 
         telegramSender.send(SendMessage.builder()

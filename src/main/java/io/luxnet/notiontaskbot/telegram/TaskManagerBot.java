@@ -29,6 +29,7 @@ public class TaskManagerBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
+        log.info("Update received: {}", update.getUpdateId());
         handlers.stream()
                 .filter(handler -> handler.supports(update))
                 .findFirst()

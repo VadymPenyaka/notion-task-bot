@@ -9,4 +9,5 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "notion")
 public class NotionProperties {
     private String apiToken;
+    private String databaseId;
 }
