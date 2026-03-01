@@ -1,8 +1,8 @@
 package io.luxnet.notiontaskbot.telegram.handler;
 
-import io.luxnet.notiontaskbot.model.Task;
-import io.luxnet.notiontaskbot.model.TaskStatus;
-import io.luxnet.notiontaskbot.service.TaskService;
+import io.luxnet.notiontaskbot.task.model.Task;
+import io.luxnet.notiontaskbot.task.model.TaskStatus;
+import io.luxnet.notiontaskbot.task.TaskService;
 import io.luxnet.notiontaskbot.telegram.TelegramSender;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.annotation.Order;
@@ -103,7 +103,7 @@ public class CallbackQueryHandler implements UpdateHandler {
     private InlineKeyboardButton buildButton(Task task, TaskStatus status) {
         String text = status == TaskStatus.DONE
                 ? "✅ " + task.name()
-                : MorningBriefHandler.priorityIcon(task.priority()) + " " + task.name();
+                : task.priority().getTelegramIcon() + " " + task.name();
 
         return InlineKeyboardButton.builder()
                 .text(text)

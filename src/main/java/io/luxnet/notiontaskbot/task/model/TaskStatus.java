@@ -1,4 +1,4 @@
-package io.luxnet.notiontaskbot.model;
+package io.luxnet.notiontaskbot.task.model;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -31,5 +31,9 @@ public enum TaskStatus {
         return Arrays.stream(values())
                 .filter(s -> data.startsWith(s.callbackPrefix))
                 .findFirst();
+    }
+
+    public static TaskStatus fromNotionName(String name) {
+        return "Done".equals(name) ? DONE : TODO;
     }
 }
