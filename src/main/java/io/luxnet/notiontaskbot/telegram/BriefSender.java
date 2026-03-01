@@ -9,6 +9,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -31,26 +32,51 @@ public class BriefSender {
     }
 
     static InlineKeyboardMarkup buildKeyboard(List<Task> tasks) {
-        List<List<InlineKeyboardButton>> todoRows = tasks.stream()
-                .filter(t -> t.status() == TaskStatus.TODO)
+        LocalDate today = LocalDate.now();
+
+        List<Task> overdue = tasks.stream()
+                .filter(t -> t.date().isBefore(today) && t.status() == TaskStatus.TODO)
                 .sorted(Comparator.comparingInt(t -> t.priority().ordinal()))
-                .map(t -> List.of(InlineKeyboardButton.builder()
-                        .text(t.priority().getTelegramIcon() + " " + t.name())
-                        .callbackData(TaskStatus.TODO.callbackData(t.id()))
-                        .build()))
                 .toList();
 
-        List<List<InlineKeyboardButton>> doneRows = tasks.stream()
-                .filter(t -> t.status() == TaskStatus.DONE)
-                .map(t -> List.of(InlineKeyboardButton.builder()
-                        .text("✅ " + t.name())
-                        .callbackData(TaskStatus.DONE.callbackData(t.id()))
-                        .build()))
+        List<Task> todayTodo = tasks.stream()
+                .filter(t -> t.date().isEqual(today) && t.status() == TaskStatus.TODO)
+                .sorted(Comparator.comparingInt(t -> t.priority().ordinal()))
+                .toList();
+
+        List<Task> todayDone = tasks.stream()
+                .filter(t -> t.date().isEqual(today) && t.status() == TaskStatus.DONE)
                 .toList();
 
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
-        rows.addAll(todoRows);
-        rows.addAll(doneRows);
+
+        for (Task t : todayTodo) {
+            rows.add(List.of(InlineKeyboardButton.builder()
+                    .text(t.priority().getTelegramIcon() + " " + t.name())
+                    .callbackData(TaskStatus.TODO.callbackData(t.id()))
+                    .build()));
+        }
+
+        for (Task t : todayDone) {
+            rows.add(List.of(InlineKeyboardButton.builder()
+                    .text("✅ " + t.name())
+                    .callbackData(TaskStatus.DONE.callbackData(t.id()))
+                    .build()));
+        }
+
+        if (!overdue.isEmpty()) {
+            rows.add(List.of(InlineKeyboardButton.builder()
+                    .text("─── Протерміновано ───")
+                    .callbackData("noop")
+                    .build()));
+        }
+
+        for (Task t : overdue) {
+            rows.add(List.of(InlineKeyboardButton.builder()
+                    .text(t.priority().getTelegramIcon() + " " + t.name())
+                    .callbackData(TaskStatus.TODO.callbackData(t.id()))
+                    .build()));
+        }
 
         return InlineKeyboardMarkup.builder()
                 .keyboard(rows)

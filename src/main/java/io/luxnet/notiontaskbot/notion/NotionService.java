@@ -51,10 +51,20 @@ public class NotionService {
         return """
                 {
                   "filter": {
-                    "property": "Date",
-                    "date": {"equals": "%s"}
+                    "or": [
+                      {
+                        "and": [
+                          {"property": "Task Status", "status": {"equals": "TODO"}},
+                          {"property": "Date", "date": {"before": "%s"}}
+                        ]
+                      },
+                      {
+                        "property": "Date",
+                        "date": {"equals": "%s"}
+                      }
+                    ]
                   }
                 }
-                """.formatted(today);
+                """.formatted(today, today);
     }
 }

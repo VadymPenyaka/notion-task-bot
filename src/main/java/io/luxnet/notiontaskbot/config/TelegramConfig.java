@@ -21,7 +21,14 @@ public class TelegramConfig {
     @Bean
     @Primary
     public AbsSender telegramAbsSender(TelegramProperties telegramProperties) {
-        return new DefaultAbsSender(new DefaultBotOptions(), telegramProperties.getToken()) {};
+        return new DefaultAbsSender(botOptions(), telegramProperties.getToken()) {};
+    }
+
+    @Bean
+    public DefaultBotOptions botOptions() {
+        DefaultBotOptions options = new DefaultBotOptions();
+        options.setGetUpdatesTimeout(30);
+        return options;
     }
 
     @Bean
