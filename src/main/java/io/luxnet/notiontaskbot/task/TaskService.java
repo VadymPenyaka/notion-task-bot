@@ -2,6 +2,7 @@ package io.luxnet.notiontaskbot.task;
 
 import io.luxnet.notiontaskbot.notion.NotionService;
 import io.luxnet.notiontaskbot.task.model.Task;
+import io.luxnet.notiontaskbot.task.model.TaskStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,5 +16,9 @@ public class TaskService {
 
     public List<Task> getTasks() {
         return notionService.getTasks();
+    }
+
+    public void updateStatus(String taskId, TaskStatus status) {
+        notionService.updateStatus(taskId, status);
     }
 }

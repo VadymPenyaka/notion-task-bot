@@ -10,10 +10,11 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public enum TaskStatus {
 
-    TODO("done:"),
-    DONE("undo:");
+    TODO("done:", "TODO"),
+    DONE("undo:", "Done");
 
     private final String callbackPrefix;
+    private final String notionName;
 
     public TaskStatus toggle() {
         return this == TODO ? DONE : TODO;

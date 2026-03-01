@@ -3,6 +3,7 @@ package io.luxnet.notiontaskbot.notion;
 import tools.jackson.databind.JsonNode;
 import io.luxnet.notiontaskbot.config.property.NotionProperties;
 import io.luxnet.notiontaskbot.task.model.Task;
+import io.luxnet.notiontaskbot.task.model.TaskStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,19 @@ public class NotionService {
         return tasks.stream()
                 .sorted(Comparator.comparingInt(t -> t.priority().ordinal()))
                 .toList();
+    }
+
+    public void updateStatus(String pageId, TaskStatus status) {
+        String body = """
+                {
+                  "properties": {
+                    "Task Status": {
+                      "status": {"name": "%s"}
+                    }
+                  }
+                }
+                """.formatted(status.getNotionName());
+        apiClient.updatePageStatus(pageId, body);
     }
 
     private String buildFilter(String today) {
